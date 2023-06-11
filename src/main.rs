@@ -1,48 +1,16 @@
-fn func_ex_div_some(x: i32, y: i32) -> Option<i32> {
-    if y == 0 {
-        None
-    } else {
-        Some(x / y)
-    }
-}
-
-fn func_ex_div_result(x: i32, y: i32) -> Result<i32, &'static str> {
-    if y == 0 {
-        Err("div by zero")
-    } else {
-        Ok(x / y)
-    }
-}
-
-fn func_ex_print_some<T: std::fmt::Display>(ans: Option<T>) {
-    if let Some(x) = ans {
-        println!("{}", x)
-    } else {
-        println!("None")
-    }
-}
-
-fn func_ex_print_some_match<T: std::fmt::Display>(ans: Option<T>) {
-    match ans {
-        Some(x) => println!("{}", x),
-        None => println!("None"),
-    }
-}
-
-fn func_ex_print_result<T: std::fmt::Display, E: std::fmt::Display>(ans: Result<T, E>) {
-    match ans {
-        Ok(x) => println!("{}", x),
-        Err(e) => println!("{}", e),
-    }
+fn myclear(x: &mut String) {
+    x.clear();
 }
 
 fn main() {
-    func_ex_print_some(func_ex_div_some(10, 5));
-    func_ex_print_some(func_ex_div_some(10, 0));
+    let mut s = "Hello".to_string();
+    println!("s = {}", s);
 
-    func_ex_print_some_match(func_ex_div_some(10, 5));
-    func_ex_print_some_match(func_ex_div_some(10, 0));
+    let s_ref = &mut s;
+    myclear(s_ref);
+    println!("s = {}", s);
 
-    func_ex_print_result(func_ex_div_result(10, 5));
-    func_ex_print_result(func_ex_div_result(10, 0));
+    let s_ref2 = &mut s;
+    myclear(s_ref2);
+    println!("s = {}", s)
 }
