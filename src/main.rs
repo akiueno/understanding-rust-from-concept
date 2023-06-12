@@ -1,17 +1,29 @@
-fn pick2<'a, 'b>(x: &'a[i32], y: &'b[i32], end: usize) -> (&'a[i32], &'b[i32]) {
-    (&x[..end], &y[..end])
+use std::cmp::Ordering;
+
+enum Sign {
+    Positive,
+    Zero,
+    Negative,
+}
+
+fn determine_sign(x: i32) -> Sign {
+    match x.cmp(&0) {
+        Ordering::Less => Sign::Negative,
+        Ordering::Equal => Sign::Zero,
+        Ordering::Greater => Sign::Positive,
+    }
+}
+
+fn print_sign(s: Sign) {
+    match s {
+        Sign::Positive => println!("+"),
+        Sign::Zero => println!("0"),
+        Sign::Negative => println!("-"),
+    }
 }
 
 fn main() {
-    let v1 = [1, 2, 3, 4, 5];
-    let v2 = [6, 7, 8];
-
-    let p = pick2(&v1, &v2, 2);
-    for ss in p.0 {
-        println!("{}", ss);
-    }
-
-    for ss in p.1 {
-        println!("{}", ss);
-    }
+    print_sign(determine_sign(10));
+    print_sign(determine_sign(-2));
+    print_sign(determine_sign(0));
 }
