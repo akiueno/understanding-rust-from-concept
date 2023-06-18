@@ -1,26 +1,13 @@
-use std::fs::File;
-use std::io::Read;
+fn return_input<T>(x: T) -> T {
+    x
+}
 
-fn main() -> std::io::Result<()> {
-    let mut f = File::open("input.txt")?;
+fn main() {
+    let x1 = return_input(1);
+    let x2 = return_input(String::from("Hello World!"));
+    let x3 = return_input::<f64>(2.0);
 
-    let mut lines = Vec::new();
-    let mut linebuf = String::new();
-
-    let mut buf = Vec::new();
-    let read_size = f.read_to_end(&mut buf)?;
-
-    println!("read_size: {}", read_size);
-
-    for cc in &buf[..read_size] {
-        if *cc == b'\n' {
-            lines.push(linebuf.clone());
-            linebuf = String::new();
-        } else {
-            linebuf.push(*cc as char);
-        }
-    }
-    println!("lines: {:?}", lines);
-
-    Ok(())
+    println!("x1 = {}", x1);
+    println!("x2 = {}", x2);
+    println!("x3 = {}", x3);
 }
