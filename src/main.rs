@@ -1,29 +1,36 @@
-use std::cmp::Ordering;
+use std::fs::File;
+use std::io::Read;
 
-enum Sign {
-    Positive,
-    Zero,
-    Negative,
-}
+const BUFSIZE: usize = 1024;
 
-fn determine_sign(x: i32) -> Sign {
-    match x.cmp(&0) {
-        Ordering::Less => Sign::Negative,
-        Ordering::Equal => Sign::Zero,
-        Ordering::Greater => Sign::Positive,
+fn main() -> std::io::Result<()> {
+    let mut f = File::open("input.txt")?;
+    let mut buf = [0_u8; BUFSIZE];
+
+    let mut lines = Vec::new();
+    let mut linebuf = String::new();
+
+    loop {
+        let read_size = f.read(&mut buf)?;
+
+        println!("buf: {:?}", &buf);
+        println!("read_size: {:?}", read_size);
+
+        if read_size == 0 {
+            break;
+        }
+
+        for cc in &buf[..read_size] {
+            if *cc == b'\n' {
+                lines.push(linebuf);
+                linebuf = String::new();
+            } else {
+                linebuf.push(*cc as char);
+            }
+        }
     }
-}
 
-fn print_sign(s: Sign) {
-    match s {
-        Sign::Positive => println!("+"),
-        Sign::Zero => println!("0"),
-        Sign::Negative => println!("-"),
-    }
-}
+    println!("{:?}", lines);
 
-fn main() {
-    print_sign(determine_sign(10));
-    print_sign(determine_sign(-2));
-    print_sign(determine_sign(0));
+    Ok(())
 }
