@@ -1,21 +1,28 @@
-struct GenEx<T> {
-    value: T,
+use std::ops::Deref;
+
+struct MyData {
+    x: i32,
 }
 
-impl<T> GenEx<T> {
-    fn return_value(self) -> T {
-        self.value
+impl Deref for MyData {
+    type Target = i32;
+    fn deref(&self) -> &Self::Target {
+        &self.x
     }
 }
 
+fn deref_data(x: &i32) -> i32 {
+    *x
+}
 fn main() {
-    let x1 = GenEx { value: 1 };
-    let x2 = GenEx {
-        value: String::from("Hello World!"),
-    };
-    let x3 = GenEx::<f64> { value: 3.0 };
+    let data = MyData { x: 1 }; //MyData型
+    let data_deref1 = data.deref(); //&1:&i32型
+    let data_deref2 = *(data.deref()); //1:i32型
+    let data_deref3 = *data; //1:i32型
+    let data_deref4 = deref_data(&data); //1:i32型
 
-    println!("x1 = {}", x1.return_value());
-    println!("x2 = {}", x2.return_value());
-    println!("x3 = {}", x3.return_value());
+    println!("{}", data_deref1);
+    println!("{}", data_deref2);
+    println!("{}", data_deref3);
+    println!("{}", data_deref4);
 }
